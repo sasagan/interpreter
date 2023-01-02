@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <regex>
+
 using namespace std;
 
 class TokenType
@@ -10,6 +11,15 @@ private:
 	string name;
 	string regex;
 public:
+	string GetName()
+	{
+		return name;
+	}
+	string GetRegex()
+	{
+		return regex;
+	}
+
 	TokenType(string name, string regex)
 	{
 		this->name = name; this->regex = regex;
@@ -22,9 +32,15 @@ public:
 	~TokenType() = default;
 };
 
-TokenType NUMBER("NUMBER", "[0-9]");
-TokenType VARIABLE("VARIABLE", "[a-z]");
+TokenType NUMBER("NUMBER", "[0-9]+");
+TokenType TEXT("TEXT", "\".+\"");
 TokenType SEMICOLON("SEMICOLON", ";");
-TokenType SPACE("VARIABLE", "[\t\n\r]");
+TokenType LEFTPARENTHESIS("LEFTPARENTHESIS", "(");
+TokenType RIGHTPARENTHESIS("RIGHTPARENTHESIS", ")");
+TokenType SPACE("SPACE", "[\t\n\r]");
 TokenType ASSIGN("ASSIGN", "=");
+
+TokenType KEYWORDS("KEYWORDS", "LOG|IF|FOR");
+TokenType DATATYPE("DATATYPE", "int|string|boolean|float");
+TokenType VARIABLE("VARIABLE", "[a-zA-Z_]+[0-9]+[a-zA-Z_]+|[a-zA-Z_]+[0-9]+|[a-zA-Z_]+");
 
