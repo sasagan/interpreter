@@ -42,5 +42,6 @@ TokenType ASSIGN("ASSIGN", "=");
 
 TokenType KEYWORDS("KEYWORDS", "LOG|IF|FOR");
 TokenType DATATYPE("DATATYPE", "int|string|boolean|float");
+TokenType ARITHMETICOPERATIONS("ARITHMETICOPERATIONS", "\+|\*|\-|\/");
 TokenType VARIABLE("VARIABLE", "[a-zA-Z_]+[0-9]+[a-zA-Z_]+|[a-zA-Z_]+[0-9]+|[a-zA-Z_]+");
 

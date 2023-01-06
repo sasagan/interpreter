@@ -15,10 +15,11 @@ using namespace std;
 int main()
 {
 	string code = "int a = 234;\
-					int b = a;\
-					string s = \"hello\";\
+					LOG a;\
+					int b = 2 * 6 + 4 / 2;\
 					LOG b;\
-					LOG a;";
+					int c = a / b;\
+					LOG c";
 
 	Lexer lexer;
 	lexer.lexAnalyzer(code);
@@ -26,6 +27,13 @@ int main()
 	Parser parser;
 	parser.syntAnalyzer(lexer.arrToken);
 	//printf(lexer.arrToken[1].GetName().c_str());
+
+	//parser.syntAnalyzer(lexer.arrToken);
+	/*for (int i = 0; i < 2; i++)
+	{
+		cout << "name - " + parser.arrVariable[i].GetName() << endl;
+		cout << "mean - " + parser.arrVariable[i].GetMean() << endl;
+	}*/
 
 	int a = 34;
 	a = 12;

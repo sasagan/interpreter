@@ -39,6 +39,7 @@ public:
 			{
 				arrToken.push_back(Token(NUMBER, currentToken, i + 1));
 			}
+			
 			else if (regex_match(currentToken, regex(KEYWORDS.GetRegex())) == true)
 			{
 				arrToken.push_back(Token(KEYWORDS, currentToken, i + 1));
@@ -66,6 +67,10 @@ public:
 			else if (regex_match(currentToken, regex(ASSIGN.GetRegex())) == true)
 			{
 				arrToken.push_back(Token(ASSIGN, currentToken, i + 1));
+			}
+			else if (currentToken == "+" || currentToken == "-" || currentToken == "*" || currentToken == "/")
+			{
+				arrToken.push_back(Token(ARITHMETICOPERATIONS, currentToken, i + 1));
 			}
 		}
 	}
