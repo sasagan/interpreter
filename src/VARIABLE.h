@@ -23,6 +23,14 @@ public:
 	{
 		return datatype;
 	}
+
+
+	void SetMean(string mean)
+	{
+		this->mean = mean;
+	}
+
+
 	Variable(string name, string mean, string datatype)
 	{
 		this->name = name; this->mean = mean; this->datatype = datatype;

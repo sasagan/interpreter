@@ -14,12 +14,8 @@ using namespace std;
 
 int main()
 {
-	string code = "int a = 234;\
-					LOG a;\
-					int b = 2 * 6 + 4 / 2;\
-					LOG b;\
-					int c = a / b;\
-					LOG c";
+	string code = "string ds = \"tex test\" + \"43\";\
+					LOG \"text \" + ds;";
 
 	Lexer lexer;
 	lexer.lexAnalyzer(code);

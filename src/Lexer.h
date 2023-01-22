@@ -20,16 +20,41 @@ public:
 			string currentToken;
 			while ((code[i] != ' ') and i < code.size())
 			{
-				currentToken += code[i];
-				i++;
-				if (code[i] == ';')
+				if (code[i] == '\"')
 				{
-					i--;
-					break;
+					currentToken += code[i];
+					i++;
+					while (code[i] != '\"')
+					{
+						currentToken += code[i];
+						i++;
+
+					}
+					currentToken += code[i];
+					i++;
+					if (code[i] == ';')
+					{
+						i--;
+						break;
+					}
+					if (code[i] == '\t')
+					{
+						break;
+					}
 				}
-				if (code[i] == '\t')
+				else
 				{
-					break;
+					currentToken += code[i];
+					i++;
+					if (code[i] == ';')
+					{
+						i--;
+						break;
+					}
+					if (code[i] == '\t')
+					{
+						break;
+					}
 				}
 			}
 			//string currentToken(1, c_code[i]);
@@ -54,6 +79,8 @@ public:
 			}
 			else if (regex_match(currentToken, regex(TEXT.GetRegex())) == true)
 			{
+				string b = currentToken.erase(0, 1);
+				b = currentToken.erase(currentToken.size() - 1, 1);
 				arrToken.push_back(Token(TEXT, currentToken, i + 1));
 			}
 			else if (regex_match(currentToken, regex(SPACE.GetRegex())) == i + 1)
