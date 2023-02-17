@@ -14,14 +14,19 @@ using namespace std;
 
 int main()
 {
-	string code = "string ds = \"tex test\" + \"43\";\
-					LOG \"text \" + ds;";
+	setlocale(LC_ALL, "Russian");
 
+
+	string code = "int a = 2;\
+					IF (a == 3 OR a <= 3 AND a == 4) { \
+					LOG \"yes\"; }\
+					LOG a; ";
+	//ELSE { LOG \"no\"; }
 	Lexer lexer;
 	lexer.lexAnalyzer(code);
 
 	Parser parser;
-	parser.syntAnalyzer(lexer.arrToken);
+	parser.syntAnalyzer(lexer.arrToken, 0, lexer.arrToken.size());
 	//printf(lexer.arrToken[1].GetName().c_str());
 
 	//parser.syntAnalyzer(lexer.arrToken);

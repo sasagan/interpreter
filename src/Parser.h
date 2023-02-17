@@ -9,17 +9,30 @@ class Parser
 private:
 	int priority(string operation)
 	{
-		if (operation == "+" or operation == "-")
+		if (operation == "OR")
+		{
+			return 0;
+		}
+		else if (operation == "AND")
 		{
 			return 1;
 		}
-		else if (operation == "*" or operation == "/")
+		else if (operation == ">" or operation == ">=" or operation == "==" or operation == "<=" or operation == "<")
 		{
 			return 2;
+		}
+		else if (operation == "+" or operation == "-")
+		{
+			return 3;
+		}
+		else if (operation == "*" or operation == "/")
+		{
+			return 4;
 		}
 	}
 public:
 	vector <Variable> arrVariable;
+
 
 	string ExpressionAnalyzerString(vector <Token> arrToken, int start, int end)
 	{
@@ -146,6 +159,83 @@ public:
 						{
 							arrNum[arrNum.size() - 2] = arrNum[arrNum.size() - 2] / arrNum[arrNum.size() - 1];
 						}
+						else if (arrOperations[arrOperations.size() - 2] == "<")
+						{
+							if (arrNum[arrNum.size() - 2] < arrNum[arrNum.size() - 1])
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "<=")
+						{
+							if (arrNum[arrNum.size() - 2] <= arrNum[arrNum.size() - 1])
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "==")
+						{
+							if (arrNum[arrNum.size() - 2] == arrNum[arrNum.size() - 1])
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == ">=")
+						{
+							if (arrNum[arrNum.size() - 2] >= arrNum[arrNum.size() - 1])
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == ">")
+						{
+							if (arrNum[arrNum.size() - 2] > arrNum[arrNum.size() - 1])
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "AND")
+						{
+							if (arrNum[arrNum.size() - 2] == 1 and arrNum[arrNum.size() - 1] == 1)
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "OR")
+						{
+							if (arrNum[arrNum.size() - 2] == 1 or arrNum[arrNum.size() - 1] == 1)
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
 						arrNum.pop_back();
 						arrOperations[arrOperations.size() - 2] = arrOperations[arrOperations.size() - 1];
 						arrOperations.pop_back();
@@ -153,6 +243,117 @@ public:
 					}
 				}
 				
+			}
+			else if (arrToken[i].GetNameTokenType() == "COMPARISON" or arrToken[i].GetTextToken() == "OR" or arrToken[i].GetTextToken() == "AND")
+			{
+				if (arrNum.size() < 2)
+				{
+					arrOperations.push_back(arrToken[i].GetTextToken());
+				}
+				else if (arrNum.size() >= 2)
+				{
+					arrOperations.push_back(arrToken[i].GetTextToken());
+					if (priority(arrOperations[arrOperations.size() - 1]) <= priority(arrOperations[arrOperations.size() - 2]))
+					{
+						if (arrOperations[arrOperations.size() - 2] == "+")
+						{
+							arrNum[arrNum.size() - 2] = arrNum[arrNum.size() - 2] + arrNum[arrNum.size() - 1];
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "-")
+						{
+							arrNum[arrNum.size() - 2] = arrNum[arrNum.size() - 2] - arrNum[arrNum.size() - 1];
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "*")
+						{
+							arrNum[arrNum.size() - 2] = arrNum[arrNum.size() - 2] * arrNum[arrNum.size() - 1];
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "/")
+						{
+							arrNum[arrNum.size() - 2] = arrNum[arrNum.size() - 2] / arrNum[arrNum.size() - 1];
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "<")
+						{
+							if (arrNum[arrNum.size() - 2] < arrNum[arrNum.size() - 1])
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "<=")
+						{
+							if (arrNum[arrNum.size() - 2] <= arrNum[arrNum.size() - 1])
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "==")
+						{
+							if (arrNum[arrNum.size() - 2] == arrNum[arrNum.size() - 1])
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == ">=")
+						{
+							if (arrNum[arrNum.size() - 2] >= arrNum[arrNum.size() - 1])
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == ">")
+						{
+							if (arrNum[arrNum.size() - 2] > arrNum[arrNum.size() - 1])
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "AND")
+						{
+							if (arrNum[arrNum.size() - 2] == 1 and arrNum[arrNum.size() - 1] == 1)
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						else if (arrOperations[arrOperations.size() - 2] == "OR")
+						{
+							if (arrNum[arrNum.size() - 2] == 1 or arrNum[arrNum.size() - 1] == 1)
+							{
+								arrNum[arrNum.size() - 2] = 1;
+							}
+							else
+							{
+								arrNum[arrNum.size() - 2] = 0;
+							}
+						}
+						arrNum.pop_back();
+						arrOperations[arrOperations.size() - 2] = arrOperations[arrOperations.size() - 1];
+						arrOperations.pop_back();
+
+					}
+				}
 			}
 			else if (arrToken[i].GetNameTokenType() == "VARIABLE")
 			{
@@ -165,6 +366,36 @@ public:
 							arrNum.push_back(stoi(arrVariable[j].GetMean()));
 							break;
 						}
+						else if (arrVariable[j].GetDataType() == "string")
+						{
+							// решение проблемы с лог опер со строками
+							int k1 = i;
+							while (arrToken[k1].GetTextToken() != "==")
+							{
+								k1++;
+							}
+							int k2 = k1 + 1;
+
+							while (true)
+							{
+								if (arrToken[k2].GetNameTokenType() == "RIGHTPARENTHESIS" or arrToken[k2].GetTextToken() == "OR" or arrToken[k2].GetTextToken() == "AND")
+								{
+									
+									break;
+								}
+								k2++;
+							}
+							if (ExpressionAnalyzerString(arrToken, i, k1) == ExpressionAnalyzerString(arrToken, k1 + 1, k2)) // здесь что то не так с переменными i k1 k2
+							{
+								arrNum.push_back(1);
+							}
+							else
+							{
+								arrNum.push_back(0);
+							}
+							i = k2-1;
+							break;
+						}
 						else
 						{
 							error("afefs90j");
@@ -175,6 +406,36 @@ public:
 						error("asfdse");
 					}
 				}
+			}
+			else if (arrToken[i].GetNameTokenType() == "TEXT")
+			{
+				// решение проблемы с лог опер со строками
+				int k1 = i;
+				while (arrToken[k1].GetTextToken() != "==")
+				{
+					k1++;
+				}
+				int k2 = k1 + 1;
+
+				while (true)
+				{
+					if (arrToken[k2].GetNameTokenType() == "RIGHTPARENTHESIS" or arrToken[k2].GetTextToken() == "OR" or arrToken[k2].GetTextToken() == "AND")
+					{
+						
+						break;
+					}
+					k2++;
+				}
+				if (ExpressionAnalyzerString(arrToken, i, k1) == ExpressionAnalyzerString(arrToken, k1 + 1, k2))
+				{
+					arrNum.push_back(1);
+				}
+				else
+				{
+					arrNum.push_back(0);
+				}
+				i = k2-1;
+				break;
 			}
 			else
 			{
@@ -205,11 +466,144 @@ public:
 							{
 								arrNum[arrNum.size() - 2] = arrNum[arrNum.size() - 2] / arrNum[arrNum.size() - 1];
 							}
+							else if (arrOperations[j] == "<")
+							{
+								if (arrNum[arrNum.size() - 2] < arrNum[arrNum.size() - 1])
+								{
+									arrNum[arrNum.size() - 2] = 1;
+								}
+								else
+								{
+									arrNum[arrNum.size() - 2] = 0;
+								}
+							}
+							else if (arrOperations[j] == "<=")
+							{
+								if (arrNum[arrNum.size() - 2] <= arrNum[arrNum.size() - 1])
+								{
+									arrNum[arrNum.size() - 2] = 1;
+								}
+								else
+								{
+									arrNum[arrNum.size() - 2] = 0;
+								}
+							}
+							else if (arrOperations[j] == "==")
+							{
+								if (arrNum[arrNum.size() - 2] == arrNum[arrNum.size() - 1])
+								{
+									arrNum[arrNum.size() - 2] = 1;
+								}
+								else
+								{
+									arrNum[arrNum.size() - 2] = 0;
+								}
+							}
+							else if (arrOperations[j] == ">=")
+							{
+								if (arrNum[arrNum.size() - 2] >= arrNum[arrNum.size() - 1])
+								{
+									arrNum[arrNum.size() - 2] = 1;
+								}
+								else
+								{
+									arrNum[arrNum.size() - 2] = 0;
+								}
+							}
+							else if (arrOperations[j] == ">")
+							{
+								if (arrNum[arrNum.size() - 2] > arrNum[arrNum.size() - 1])
+								{
+									arrNum[arrNum.size() - 2] = 1;
+								}
+								else
+								{
+									arrNum[arrNum.size() - 2] = 0;
+								}
+							}
+							else if (arrOperations[j] == "AND")
+							{
+								if (arrNum[arrNum.size() - 2] == 1 and arrNum[arrNum.size() - 1] == 1)
+								{
+									arrNum[arrNum.size() - 2] = 1;
+								}
+								else
+								{
+									arrNum[arrNum.size() - 2] = 0;
+								}
+							}
+							else if (arrOperations[j] == "OR")
+							{
+								if (arrNum[arrNum.size() - 2] == 1 or arrNum[arrNum.size() - 1] == 1)
+								{
+									arrNum[arrNum.size() - 2] = 1;
+								}
+								else
+								{
+									arrNum[arrNum.size() - 2] = 0;
+								}
+							}
 							arrNum.pop_back();
 							//arrOperations.pop_back();
 						}
 					}
 				}
+				else if (arrToken[i].GetNameTokenType() == "TEXT" or arrToken[i].GetNameTokenType() == "VARIABLE")
+				{
+					if (arrOperations.size() >= 1)
+					{
+						for (int j = arrOperations.size() - 1; j >= 0; j--)
+						{
+							if (arrOperations[j] == "AND")
+							{
+								if (arrNum[arrNum.size() - 2] == 1 and arrNum[arrNum.size() - 1] == 1)
+								{
+									arrNum[arrNum.size() - 2] = 1;
+								}
+								else
+								{
+									arrNum[arrNum.size() - 2] = 0;
+								}
+							}
+							else if (arrOperations[j] == "OR")
+							{
+								if (arrNum[arrNum.size() - 2] == 1 or arrNum[arrNum.size() - 1] == 1)
+								{
+									arrNum[arrNum.size() - 2] = 1;
+								}
+								else
+								{
+									arrNum[arrNum.size() - 2] = 0;
+								}
+							}
+							arrNum.pop_back();
+						}
+					}
+				}
+				/*else if ()
+				{
+				// решение проблемы с лог опер со строками
+				int k1 = i;
+				while (arrToken[k1].GetTextToken() != "==")
+				{
+					k1++;
+				}
+				int k2 = k1 + 2;
+
+				while (arrToken[k2].GetNameTokenType() != "RIGHTPARENTHESIS" or arrToken[k2].GetTextToken() != "OR" or arrToken[k2].GetTextToken() != "AND")
+				{
+					k2++;
+				}
+				if (ExpressionAnalyzerString(arrToken, i, k1) == ExpressionAnalyzerString(arrToken, k1 + 2, k2))
+				{
+					arrNum.push_back(1);
+				}
+				else
+				{
+					arrNum.push_back(0);
+				}
+				i = k2 + 1;
+				}*/
 				/*if (arrToken[i].GetNameTokenType() == "NUMBER" or arrToken[i].GetNameTokenType() == "VARIABLE")
 				{
 					//arrNum.push_back(stoi(arrToken[i].GetTextToken()));
@@ -244,9 +638,9 @@ public:
 	}
 
 
-	void syntAnalyzer(vector <Token> arrToken)
+	void syntAnalyzer(vector <Token> arrToken, int start, int end)
 	{
-		for (int i = 0; i < arrToken.size(); i++)
+		for (int i = start; i < end; i++)
 		{
 			if (arrToken[i].GetNameTokenType() == "DATATYPE")
 			{
@@ -304,11 +698,11 @@ public:
 							/**/
 							if (arrToken[i + 2].GetNameTokenType() == "TEXT")
 							{
-								arrVariable[j].SetMean(ExpressionAnalyzerString(arrToken, i + 1, j));
+								arrVariable[j].SetMean(ExpressionAnalyzerString(arrToken, i+2, k));
 							}
 							else if (arrToken[i + 2].GetNameTokenType() == "NUMBER")
 							{
-								arrVariable[j].SetMean(to_string(mathExpressionAnalyzerInt(arrToken, i + 1, j)));
+								arrVariable[j].SetMean(to_string(mathExpressionAnalyzerInt(arrToken, i+2, k)));
 							}
 							else if (arrToken[i + 2].GetNameTokenType() == "VARIABLE")
 							{
@@ -318,12 +712,12 @@ public:
 									{
 										if (arrVariable[l].GetDataType() == "string")
 										{
-											arrVariable[j].SetMean(ExpressionAnalyzerString(arrToken, i + 1, j));
+											arrVariable[j].SetMean(ExpressionAnalyzerString(arrToken, i + 2, k));
 											break;
 										}
 										else if (arrVariable[l].GetDataType() == "int")
 										{
-											arrVariable[j].SetMean(to_string(mathExpressionAnalyzerInt(arrToken, i + 1, j)));
+											arrVariable[j].SetMean(to_string(mathExpressionAnalyzerInt(arrToken, i + 2, k)));
 											break;
 										}
 										else
@@ -397,7 +791,43 @@ public:
 					
 					i = j;
 				}
+				else if (arrToken[i].GetTextToken() == "IF")
+				{
+					if (arrToken[i + 1].GetNameTokenType() == "LEFTPARENTHESIS")
+					{
+						int j = i + 2;
+						while(arrToken[j].GetNameTokenType() != "RIGHTPARENTHESIS")
+						{
+							j++;
+						}
+						if (mathExpressionAnalyzerInt(arrToken, i+2, j) == 1)   // проблема тут
+						{
+							i = j;
+							while (arrToken[i].GetNameTokenType() != "RIGHTCURLYBRACES")
+							{
+								i++;
+							}
+							syntAnalyzer(arrToken, j, i);
+						}
+						else
+						{
+							i = j;
+							while (arrToken[i].GetNameTokenType() != "RIGHTCURLYBRACES")
+							{
+								i++;
+							}
+						}
+
+					}
+					else
+					{
+						error("error: ожидается '('");
+					}
+				}
+
 			}
+
+
 		}
 	}
 };

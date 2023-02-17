@@ -29,7 +29,7 @@ public:
 		this->name = "";
 		this->regex = "";
 	}
-	~TokenType() = default;
+	//~TokenType() = default;
 };
 
 TokenType NUMBER("NUMBER", "[0-9]+");
@@ -39,8 +39,11 @@ TokenType LEFTPARENTHESIS("LEFTPARENTHESIS", "(");
 TokenType RIGHTPARENTHESIS("RIGHTPARENTHESIS", ")");
 TokenType SPACE("SPACE", "[\t\n\r]");
 TokenType ASSIGN("ASSIGN", "=");
+TokenType COMPARISON("COMPARISON", ">|>=|==|<=|<");
+TokenType LEFTCURLYBRACES("LEFTCURLYBRACES", "{");
+TokenType RIGHTCURLYBRACES("RIGHTCURLYBRACES", "}");
 
-TokenType KEYWORDS("KEYWORDS", "LOG|IF|FOR");
+TokenType KEYWORDS("KEYWORDS", "LOG|IF|FOR|ELSE|OR|AND");
 TokenType DATATYPE("DATATYPE", "int|string|boolean|float");
 TokenType ARITHMETICOPERATIONS("ARITHMETICOPERATIONS", "\+|\*|\-|\/");
 TokenType VARIABLE("VARIABLE", "[a-zA-Z_]+[0-9]+[a-zA-Z_]+|[a-zA-Z_]+[0-9]+|[a-zA-Z_]+");

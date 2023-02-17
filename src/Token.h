@@ -29,7 +29,7 @@ public:
 	{
 		this->type = type; this->text = text; this->pos = pos;
 	}
-	~Token() {}
+	//~Token() {}
 
 
 };
