@@ -54,7 +54,7 @@ public:
 			{
 				currentToken = code[i];
 			}
-			else if (code[i] == '\t')
+			else if (code[i] == '\t' or code[i] == '\n')
 			{
 				continue;
 			}
@@ -79,7 +79,7 @@ public:
 							i--;
 							break;
 						}
-						if (code[i] == '\t')
+						if (code[i] == '\t' or code[i] == '\n')
 						{
 							break;
 						}
