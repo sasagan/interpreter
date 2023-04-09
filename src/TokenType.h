@@ -43,7 +43,7 @@ TokenType COMPARISON("COMPARISON", ">|>=|==|<=|<");
 TokenType LEFTCURLYBRACES("LEFTCURLYBRACES", "{");
 TokenType RIGHTCURLYBRACES("RIGHTCURLYBRACES", "}");
 
-TokenType KEYWORDS("KEYWORDS", "LOG|IF|FOR|ELSE|OR|AND");
+TokenType KEYWORDS("KEYWORDS", "INPUT|WHILE|LOG|IF|FOR|ELSE|OR|AND");
 TokenType DATATYPE("DATATYPE", "int|string|boolean|float");
 TokenType ARITHMETICOPERATIONS("ARITHMETICOPERATIONS", "\+|\*|\-|\/");
 TokenType VARIABLE("VARIABLE", "[a-zA-Z_]+[0-9]+[a-zA-Z_]+|[a-zA-Z_]+[0-9]+|[a-zA-Z_]+");

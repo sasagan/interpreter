@@ -357,7 +357,7 @@ public:
 			}
 			else if (arrToken[i].GetNameTokenType() == "VARIABLE")
 			{
-				for (int j = 0; j < arrVariable.size(); j++)
+				for (int j = 0; j < arrVariable.size(); j++)// работа с переменными
 				{
 					if (arrVariable[j].GetName() == arrToken[i].GetTextToken())
 					{
@@ -791,6 +791,40 @@ public:
 					
 					i = j;
 				}
+				else if (arrToken[i].GetTextToken() == "INPUT")
+				{
+					for (int j = 0; j < arrVariable.size(); j++)// работа с переменными
+					{
+						if (arrVariable[j].GetName() == arrToken[i+1].GetTextToken())
+						{
+							if (arrVariable[j].GetDataType() == "int")
+							{
+								string meanvarinput;
+								cin >> meanvarinput;
+								if (regex_match(meanvarinput, regex(NUMBER.GetRegex())) == true)
+								{
+									arrVariable[j].SetMean(meanvarinput);//решить проблему с вводом
+								}
+								else
+								{
+									error("error: несоответствие типа переменной и типа введенных данных");
+								}
+							}
+							else if (arrVariable[j].GetDataType() == "string")
+							{
+								// решение проблемы с лог опер со строками
+								string meanvarinput;
+								cin >> meanvarinput;
+								arrVariable[j].SetMean(meanvarinput);
+							}
+							break;
+						}
+						if (j == arrVariable.size() - 1 and arrVariable[j].GetName() != arrToken[i].GetTextToken())
+						{
+							error("asfdse");
+						}
+					}
+				}
 				else if (arrToken[i].GetTextToken() == "IF")
 				{
 					if (arrToken[i + 1].GetNameTokenType() == "LEFTPARENTHESIS")
@@ -803,17 +837,87 @@ public:
 						if (mathExpressionAnalyzerInt(arrToken, i+2, j) == 1)   // проблема тут
 						{
 							i = j;
+							bool flagCurlybraces = 0;
 							while (arrToken[i].GetNameTokenType() != "RIGHTCURLYBRACES")
 							{
-								i++;
+								if (arrToken[i].GetNameTokenType() == "LEFTPARENTHESIS")
+								{
+									flagCurlybraces = 1;
+								}
+								if (arrToken[i+1].GetNameTokenType() == "RIGHTCURLYBRACES" and flagCurlybraces == 1)
+								{
+									i++;
+								}
+								i++;// счет заканч на первой попавшейся } из за чего работает этто не правельно
 							}
 							syntAnalyzer(arrToken, j, i);
 						}
 						else
 						{
 							i = j;
+							bool flagCurlybraces = 0;
 							while (arrToken[i].GetNameTokenType() != "RIGHTCURLYBRACES")
 							{
+								if (arrToken[i].GetNameTokenType() == "LEFTPARENTHESIS")
+								{
+									flagCurlybraces = 1;
+								}
+								if (arrToken[i + 1].GetNameTokenType() == "RIGHTCURLYBRACES" and flagCurlybraces == 1)
+								{
+									i++;
+								}
+								i++;
+							}
+						}
+
+					}
+					else
+					{
+						error("error: ожидается '('");
+					}
+				}
+				else if (arrToken[i].GetTextToken() == "WHILE")
+				{
+					if (arrToken[i + 1].GetNameTokenType() == "LEFTPARENTHESIS")
+					{
+						int j = i + 2;
+						while (arrToken[j].GetNameTokenType() != "RIGHTPARENTHESIS")
+						{
+							j++;
+						}
+						while (mathExpressionAnalyzerInt(arrToken, i + 2, j) == 1)   // проблема тут
+						{
+							int a = j;
+							bool flagCurlybraces = 0;
+							while (arrToken[a].GetNameTokenType() != "RIGHTCURLYBRACES")
+							{
+								if (arrToken[a].GetNameTokenType() == "LEFTPARENTHESIS")
+								{
+									flagCurlybraces = 1;
+								}
+								if (arrToken[a + 1].GetNameTokenType() == "RIGHTCURLYBRACES" and flagCurlybraces == 1)
+								{
+									a++;
+								}
+								a++;// счет заканч на первой попавшейся } из за чего работает этто не правельно
+							}
+							syntAnalyzer(arrToken, j, a);
+							a = j;
+						}
+						if (mathExpressionAnalyzerInt(arrToken, i + 2, j) == 0)
+						{
+							i = j;
+							bool flagCurlybraces = 0;
+							while (arrToken[i].GetNameTokenType() != "RIGHTCURLYBRACES")
+							{
+								if (arrToken[i].GetNameTokenType() == "LEFTPARENTHESIS")
+								{
+									flagCurlybraces = 1;
+								}
+								if (arrToken[i + 1].GetNameTokenType() == "RIGHTCURLYBRACES" and flagCurlybraces == 1)
+								{
+									i++;
+								}
 								i++;
 							}
 						}

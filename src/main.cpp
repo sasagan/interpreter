@@ -45,7 +45,15 @@ int main()
 						nameFile += command[j];
 					}
 					std::ifstream data(nameFile);
-					std::string string((std::istreambuf_iterator<char>(data)), std::istreambuf_iterator<char>());
+					std::string code((std::istreambuf_iterator<char>(data)), std::istreambuf_iterator<char>());
+					Lexer lexer;
+					lexer.lexAnalyzer(code);
+					for (int j = 0; j < lexer.arrToken.size(); j++)
+					{
+						cout << "[\"" << lexer.arrToken[j].GetTextToken() << "\"={ type = \"" << lexer.arrToken[j].GetNameTokenType() <<  "\" }" << "]" << endl;
+					}
+
+
 					break;
 				}
 				else if (command[i + 1] == 'S' and command[i + 2] == 'T' and command[i + 3] == 'R')
