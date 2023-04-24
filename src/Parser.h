@@ -640,8 +640,11 @@ public:
 
 	void syntAnalyzer(vector <Token> arrToken, int start, int end)
 	{
+		int flOperationIf = 0;
+		int flOperationIfMean = 0;
 		for (int i = start; i < end; i++)
 		{
+
 			if (arrToken[i].GetNameTokenType() == "DATATYPE")
 			{
 				if (arrToken[i + 1].GetNameTokenType() == "VARIABLE")
@@ -678,6 +681,7 @@ public:
 				{
 					error("error: aasesss");
 				}
+				flOperationIf = 0;
 			}
 			else if (arrToken[i].GetNameTokenType() == "VARIABLE" and arrToken[i - 1].GetNameTokenType() != "DATATYPE")
 			{
@@ -743,9 +747,12 @@ public:
 						}
 					}
 				}
+				flOperationIf = 0;
 			}
 			else if (arrToken[i].GetNameTokenType() == "KEYWORDS")
 			{
+				
+
 				if (arrToken[i].GetTextToken() == "LOG")
 				{
 					int j = i+1;
@@ -790,6 +797,7 @@ public:
 					}
 					
 					i = j;
+					flOperationIf = 0;
 				}
 				else if (arrToken[i].GetTextToken() == "INPUT")
 				{
@@ -824,6 +832,7 @@ public:
 							error("asfdse");
 						}
 					}
+					flOperationIf = 0;
 				}
 				else if (arrToken[i].GetTextToken() == "IF")
 				{
@@ -851,6 +860,7 @@ public:
 								i++;// счет заканч на первой попавшейся } из за чего работает этто не правельно
 							}
 							syntAnalyzer(arrToken, j, i);
+							flOperationIfMean = 1;
 						}
 						else
 						{
@@ -868,12 +878,116 @@ public:
 								}
 								i++;
 							}
+							flOperationIfMean = 0;
 						}
 
 					}
 					else
 					{
 						error("error: ожидается '('");
+					}
+					flOperationIf = 1;
+				}
+				else if (arrToken[i].GetTextToken() == "ELSE")
+				{
+					if (flOperationIf == 1)
+					{
+						if (flOperationIfMean == 0 and arrToken[i+1].GetTextToken() == "IF")
+						{
+							if (arrToken[i + 2].GetNameTokenType() == "LEFTPARENTHESIS")
+							{
+								int j = i + 3;
+								while (arrToken[j].GetNameTokenType() != "RIGHTPARENTHESIS")
+								{
+									j++;
+								}
+								if (mathExpressionAnalyzerInt(arrToken, i + 3, j) == 1)   // проблема тут
+								{
+									i = j;
+									bool flagCurlybraces = 0;
+									while (arrToken[i].GetNameTokenType() != "RIGHTCURLYBRACES")
+									{
+										if (arrToken[i].GetNameTokenType() == "LEFTPARENTHESIS")
+										{
+											flagCurlybraces = 1;
+										}
+										if (arrToken[i + 1].GetNameTokenType() == "RIGHTCURLYBRACES" and flagCurlybraces == 1)
+										{
+											i++;
+										}
+										i++;// счет заканч на первой попавшейся } из за чего работает этто не правельно
+									}
+									syntAnalyzer(arrToken, j, i);
+									flOperationIfMean = 1;
+								}
+								else
+								{
+									i = j;
+									bool flagCurlybraces = 0;
+									while (arrToken[i].GetNameTokenType() != "RIGHTCURLYBRACES")
+									{
+										if (arrToken[i].GetNameTokenType() == "LEFTPARENTHESIS")
+										{
+											flagCurlybraces = 1;
+										}
+										if (arrToken[i + 1].GetNameTokenType() == "RIGHTCURLYBRACES" and flagCurlybraces == 1)
+										{
+											i++;
+										}
+										i++;
+									}
+									flOperationIfMean = 0;
+								}
+
+							}
+						}
+						else if (flOperationIfMean == 0)
+						{
+							i = i+2;
+							int k = i;
+							bool flagCurlybraces = 0;
+							while (arrToken[i].GetNameTokenType() != "RIGHTCURLYBRACES")
+							{
+								if (arrToken[i].GetNameTokenType() == "LEFTPARENTHESIS")
+								{
+									flagCurlybraces = 1;
+								}
+								if (arrToken[i + 1].GetNameTokenType() == "RIGHTCURLYBRACES" and flagCurlybraces == 1)
+								{
+									i++;
+								}
+								i++;// счет заканч на первой попавшейся } из за чего работает этто не правельно
+							}
+							syntAnalyzer(arrToken, k, i);
+							flOperationIfMean = 1;
+						}
+						else if (flOperationIfMean == 1)
+						{
+							if (arrToken[i + 1].GetTextToken() == "IF")
+							{
+								i++;
+							}
+							i = i + 2;
+							
+							bool flagCurlybraces = 0;
+							while (arrToken[i].GetNameTokenType() != "RIGHTCURLYBRACES")
+							{
+								if (arrToken[i].GetNameTokenType() == "LEFTPARENTHESIS")
+								{
+									flagCurlybraces = 1;
+								}
+								if (arrToken[i + 1].GetNameTokenType() == "RIGHTCURLYBRACES" and flagCurlybraces == 1)
+								{
+									i++;
+								}
+								i++;
+							}
+							
+						}
+					}
+					else
+					{
+						error("error: требуется оператор if");
 					}
 				}
 				else if (arrToken[i].GetTextToken() == "WHILE")
@@ -927,6 +1041,7 @@ public:
 					{
 						error("error: ожидается '('");
 					}
+					flOperationIf = 0;
 				}
 
 			}

@@ -130,6 +130,10 @@ public:
 			
 			else if (regex_match(currentToken, regex(KEYWORDS.GetRegex())) == true)
 			{
+				if (currentToken[currentToken.size()-1] == '\n')
+				{
+					currentToken.erase(currentToken.size() - 1, 1) ;
+				}
 				arrToken.push_back(Token(KEYWORDS, currentToken, i + 1));
 			}
 			else if (regex_match(currentToken, regex(DATATYPE.GetRegex())) == true)
